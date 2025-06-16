@@ -26,5 +26,8 @@ app.get('/', (req, res) => {
 const productRoutes = require('./routes/productRoutes');
 app.use('/api/products', productRoutes);
 
+const authRoutes = require('./routes/authRoutes');
+app.use('/api/users', authRoutes);
+
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
