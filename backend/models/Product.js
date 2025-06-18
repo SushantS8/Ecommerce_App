@@ -6,7 +6,8 @@ const productSchema = new mongoose.Schema({
     image: String,
     description: String,
     category: String,
-    stock: Number
+    brand: String,
+    countInStock: { type: Number, required: true }
 });
 
 module.exports = mongoose.model('Product', productSchema);
