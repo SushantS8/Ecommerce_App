@@ -1,8 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const fs = require('fs');
-const path = require('path');
 require('dotenv').config();
 
 const { notFound, errorHandler } = require('./middleware/errorMiddleware');
@@ -10,6 +8,7 @@ const { setupSwagger } = require('./swagger');
 
 const productRoutes = require('./routes/productRoutes');
 const authRoutes = require('./routes/authRoutes');
+const uploadRoutes = require('./routes/upload');
 
 const app = express();
 
@@ -19,19 +18,13 @@ app.use(cors({
 
 app.use(express.json()); // For JSON requests
 
-// Serve uploaded images statically
-app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
+// Cloudinary upload route
+app.use('/api/upload', uploadRoutes);
 
 // Swagger docs
 setupSwagger(app);
 
-const uploadsDir = path.join(__dirname, 'uploads');
-
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir);
-}
-
-// Routes
+// Other API routes
 app.use('/api/products', productRoutes);
 app.use('/api/users', authRoutes);
 

@@ -19,8 +19,8 @@ exports.createProduct = async (req, res) => {
       return res.status(400).json({ message: 'Name and price are required' });
     }
 
-    // File info from multer
-    const imageName = req.file ? req.file.filename : 'no-image.jpg';
+    // Get Cloudinary image URL
+    const image = req.file ? req.file.path : '';
 
     const newProduct = new Product({
       name,
@@ -29,13 +29,12 @@ exports.createProduct = async (req, res) => {
       brand,
       category,
       countInStock,
-      image: imageName,
+      image,
     });
 
     const saved = await newProduct.save();
     res.status(201).json(saved);
   } catch (err) {
-    console.error(err);
     res.status(500).json({ message: err.message });
   }
 };
@@ -43,7 +42,14 @@ exports.createProduct = async (req, res) => {
 // Update product
 exports.updateProduct = async (req, res) => {
   try {
-    const updated = await Product.findByIdAndUpdate(req.params.id, req.body, {
+    const productId = req.params.id;
+    const updateData = req.body;
+
+    if (req.file) {
+      updateData.image = req.file.path; // Cloudinary URL
+    }
+
+    const updated = await Product.findByIdAndUpdate(productId, updateData, {
       new: true,
       runValidators: true,
     });
@@ -72,3 +78,5 @@ exports.deleteProduct = async (req, res) => {
     res.status(500).json({ message: 'Error deleting product' });
   }
 };
+
+
