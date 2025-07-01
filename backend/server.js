@@ -1,4 +1,7 @@
 const express = require('express');
+const swaggerUi = require('swagger-ui-express');
+const fs = require('fs');
+const yaml = require('js-yaml');
 const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
@@ -12,6 +15,11 @@ const uploadRoutes = require('./routes/upload');
 
 const app = express();
 
+// Load YAML file
+const swaggerDocument = yaml.load(fs.readFileSync('./swagger.yaml', 'utf8'));
+
+app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 app.use(cors({
   origin: 'http://localhost:3000', // your frontend origin
 }));
@@ -22,11 +30,11 @@ app.use(express.json()); // For JSON requests
 app.use('/api/upload', uploadRoutes);
 
 // Swagger docs
-setupSwagger(app);
+// setupSwagger(app);
 
 // Other API routes
 app.use('/api/products', productRoutes);
-app.use('/api/users', authRoutes);
+app.use('/api/auth', authRoutes);
 
 // Basic route
 app.get('/', (req, res) => {

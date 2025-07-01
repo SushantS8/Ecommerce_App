@@ -15,7 +15,7 @@ function AdminDashboard() {
   const fetchProducts = async () => {
     try {
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-      const config = userInfo ? { headers: { Authorization: `Bearer ${userInfo.token}` } } : {};
+      const config = userInfo ? { headers: { Authorization: `Bearer ${userInfo.accessToken}` } } : {};
       const { data } = await axios.get('/api/products', config);
       setProducts(data);
     } catch (err) {
@@ -28,7 +28,7 @@ function AdminDashboard() {
     try {
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
       await axios.delete(`/api/products/${productId}`, {
-        headers: { Authorization: `Bearer ${userInfo.token}` },
+        headers: { Authorization: `Bearer ${userInfo.accessToken}` },
       });
       setReload(r => !r);
     } catch (err) {
@@ -47,7 +47,7 @@ function AdminDashboard() {
 
       await axios.post('/api/products', payload, {
         headers: {
-          Authorization: `Bearer ${userInfo.token}`,
+          Authorization: `Bearer ${userInfo.accessToken}`,
           'Content-Type': 'multipart/form-data',
         },
       });
@@ -70,7 +70,7 @@ function AdminDashboard() {
 
       await axios.put(`/api/products/${editingProduct}`, payload, {
         headers: {
-          Authorization: `Bearer ${userInfo.token}`,
+          Authorization: `Bearer ${userInfo.accessToken}`,
           'Content-Type': 'multipart/form-data',
         },
       });

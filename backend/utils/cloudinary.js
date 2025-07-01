@@ -12,7 +12,7 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary,
   params: {
-    folder: 'ecommerce', // ✅ All images go to this folder
+    folder: 'ecommerce', // All images go to this folder
     allowed_formats: ['jpg', 'png', 'jpeg'],
     transformation: [{ width: 800, height: 800, crop: 'limit' }], // optional: resize or adjust images
   },

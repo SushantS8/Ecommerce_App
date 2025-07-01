@@ -33,7 +33,7 @@ const options = {
 const swaggerSpec = swaggerJSDoc(options);
 
 function setupSwagger(app) {
-  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+  app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 }
 
 module.exports = { setupSwagger, swaggerSpec };
